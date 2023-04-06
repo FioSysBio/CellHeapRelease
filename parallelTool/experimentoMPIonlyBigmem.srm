@@ -1,0 +1,49 @@
+#!/bin/bash
+#SBATCH --nodes=2                      #Numero de Nós
+#SBATCH --ntasks-per-node=1           #Numero de tarefas por Nó
+#SBATCH --ntasks=2                    #Numero total de tarefas MPI
+#SBATCH --cpus-per-task 24		#Numero de threads por tarefa MPI
+#SBATCH -p sequana_cpu_bigmem             #Fila
+#SBATCH -J sdumont-mpi                 #Nome job
+#SBATCH --exclusive                    #Utilização exclusiva dos nós durante a execução do job
+#SBATCH --time=40:20:00
+#SBATCH --output=outputMPIonlyBigmem%j.out
+#############################################
+#   Para a submissão na Sdumont:            #
+#   sbatch sub.sh EXECUTÁVEL                #
+#-------------------------------------------#
+#   Para a visualização dos Jobs:           #
+#   squeue -u $USER                         #
+#   ou                                      #
+#   watch squeue -u $USER (modo de visão    #
+#   tela cheia, para sair CTRL+C)           #
+#-------------------------------------------#
+#   Para cancelar o Job:                    #
+#   scancel NUMERO_DO_JOB                   #
+#############################################
+
+#/scratch/inova-covd19/helena.silva/MeusTestes/experimento01/apagar_conteudo.sh
+
+#carrega modulo sequana
+module load sequana/current
+
+#Exibe hora da submissão ao sbatch e informacoes adicionais
+date
+
+#Carrega ferramenta e seus parametros  
+#module load sratoolkit/2.10.5
+
+
+source /scratch/app/modulos/intel-psxe-2017.1.043.sh
+export I_MPI_PMI_LIBRARY=/usr/lib64/libpmi.so
+#module load openmpi/gnu/ilp64/4.0.3.3
+module load openmpi/icc/4.0.3.3_sequana
+
+EXEC=${1}
+
+time srun -n $SLURM_NTASKS $EXEC comandos.txt SRR_11 
+
+
+date
+echo "fim"
+
