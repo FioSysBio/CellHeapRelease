@@ -8,31 +8,14 @@
 #SBATCH --exclusive                    #Utilização exclusiva dos nós durante a execução do job
 #SBATCH --time=40:20:00
 #SBATCH --output=outputMPIonlyBigmem%j.out
-#############################################
-#   Para a submissão na Sdumont:            #
-#   sbatch sub.sh EXECUTÁVEL                #
-#-------------------------------------------#
-#   Para a visualização dos Jobs:           #
-#   squeue -u $USER                         #
-#   ou                                      #
-#   watch squeue -u $USER (modo de visão    #
-#   tela cheia, para sair CTRL+C)           #
-#-------------------------------------------#
-#   Para cancelar o Job:                    #
-#   scancel NUMERO_DO_JOB                   #
-#############################################
 
-#/scratch/inova-covd19/helena.silva/MeusTestes/experimento01/apagar_conteudo.sh
 
-#carrega modulo sequana
+
+#load sequana module 
 module load sequana/current
 
-#Exibe hora da submissão ao sbatch e informacoes adicionais
+#show start data and hour
 date
-
-#Carrega ferramenta e seus parametros  
-#module load sratoolkit/2.10.5
-
 
 source /scratch/app/modulos/intel-psxe-2017.1.043.sh
 export I_MPI_PMI_LIBRARY=/usr/lib64/libpmi.so
@@ -45,5 +28,5 @@ time srun -n $SLURM_NTASKS $EXEC comandos.txt SRR_11
 
 
 date
-echo "fim"
+echo "end"
 
