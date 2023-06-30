@@ -1,0 +1,39 @@
+#!/bin/bash
+#SBATCH --nodes=1              # Number of nodes
+#SBATCH --ntasks-per-node=24   # Number of tasks per node
+#SBATCH -p sequana_cpu_bigmem  # Execution queue (partition)
+#SBATCH -J IPV7946             # Job name
+#SBATCH --time=08:00:00        # Limite of execution time
+#SBATCH --exclusive            # Nodes with exclusive execution
+#SBATCH --mem=256G             # Job total memory 
+
+
+#Displays the sbatch submission time and additional information 
+date 
+echo Info-Prefetch-Validate Sequana-cpu 1 node nthread 1 SRR11537946 
+
+#Displays the Job allocated nodes
+echo $SLURM_JOB_NODELIST
+nodeset -e $SLURM_JOB_NODELIST
+
+cd $SLURM_SUBMIT_DIR
+
+#Load sratoolkit module
+module load sratoolkit/2.10.5
+
+#Path of the executed tool
+EXEC=/scratch/app/sratoolkit/2.10.5/bin/vdb-dump
+
+#Load tool and its parameters    
+time $EXEC --info SRR11537946 
+
+#Path and parameters of the executed tool
+EXEC=/scratch/app/sratoolkit/2.10.5/bin/prefetch
+time $EXEC -X 256000000  SRR11537946 -O /scratch/inova-covd19/PRJNA608742 
+
+#Path and parameters of the executed tool
+EXEC=/scratch/app/sratoolkit/2.10.5/bin/vdb-validate
+time $EXEC /scratch/inova-covd19/PRJNA608742/SRR11537946.sra
+
+echo Final SRR11537946 validation
+date

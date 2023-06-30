@@ -1,0 +1,40 @@
+#!/bin/bash
+#SBATCH --nodes=1             # Number of nodes
+#SBATCH --ntasks-per-node=24  # Number of tasks per node 
+#SBATCH -p sequana_cpu_bigmem # Execution queue (partition)
+#SBATCH -J F7946              # Job name
+#SBATCH --mem=256G            # Job total memory 
+#SBATCH --time=24:00:00       # Limite of execution time
+#SBATCH --exclusive           # Nodes with exclusive execution
+
+#Displays the sbatch submission time and additional information
+date 
+echo Fasterq Sequana-cpu-bigmem 1 node nthread 24 SRR11537946
+
+#Displays the Job allocated nodes
+echo $SLURM_JOB_NODELIST
+nodeset -e $SLURM_JOB_NODELIST
+
+cd $SLURM_SUBMIT_DIR
+
+#Load sequana module
+module load sequana/current
+
+#Path of the executed tool
+EXEC=/scratch/app/sratoolkit/3.0.0/bin/fasterq-dump
+
+#Path and parameters of the executed tool
+time $EXEC /scratch/inova-covd19/PRJNA608742/SRR11537946.sra -m 256000MB -e 24 -3 -S --skip-technical -O /scratch/inova-covd19/PRJNA608742/Fase2 -t /tmp
+
+#Prepare file for phase 2 input format
+gzip SRR11537946_1.fastq
+gzip SRR11537946_2.fastq
+
+mv SRR11537946_1.fastq.gz SRR11537946_S1_L001_R1_001.fastq.gz
+mv SRR11537946_2.fastq.gz SRR11537946_S1_L001_R2_001.fastq.gz
+
+date
+echo Final SRR11537946 Fasterq-dump and phase 2 input format
+
+
+

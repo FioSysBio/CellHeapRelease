@@ -1,0 +1,33 @@
+#!/bin/bash
+#SBATCH --nodes=1            # Number of nodes
+#SBATCH --ntasks-per-node=24 # Number of tasks per node 
+#SBATCH -p sequana_cpu       # Execution queue (partition)
+#SBATCH -J CRC7946           # Job name
+#SBATCH --time=24:00:00      # Limite of execution time
+#SBATCH --exclusive          # Nodes with exclusive execution
+
+#Displays the sbatch submission time and additional information
+date
+echo CellRanger Count 1 nodes 24 thread/node SRR11537946
+
+#Displays the Job allocated nodes
+echo $SLURM_JOB_NODELIST
+nodeset -e $SLURM_JOB_NODELIST
+
+cd $SLURM_SUBMIT_DIR
+
+#Load sequana module
+module load sequana/current
+
+#Path of the executed tool
+EXEC=/scratch/app/cellranger/6.1.2/bin/cellranger
+
+#Path and parameters of the executed tool
+time $EXEC count --id=CRCD-SRR11537946 \
+ 	--fastqs=/scratch/inova-covd19/PRJNA608742/Fase2 \
+	--transcriptome=/scratch/inova-covd19/transcriptome_hybrid/human_and_virus_v6 \
+	--sample=SRR11537946 
+
+date
+echo Final Cellranger Count SRR11537946
+

@@ -1,0 +1,17 @@
+Phase 4 includes software tools for ScRNA-seq dataset integration, dimensionality reduction, 
+cell clustering, and cell annotation based on gene markers and gene expression profiles.
+ 
+In this phase, of the case study, we use the following tools: Seurat package for data integration, 
+dimensionality reduction, and cell clustering. In contrast, Cellassign (version 0.99.21) and ScType 
+to identify the cell type based on a predefined set of gene markers. 
+
+Seurat carries out the clustering through a graph-based approach on a PCA reduction with several dozens 
+of PCs (typically >= 30). Based on the Euclidean distance in the PCA space, we first construct a KNN graph 
+then used the Louvain algorithm to cluster the cells. Finally, we use the UMAP algorithm for cluster 
+visualization, with the PCA reduction as input.
+
+In Phase 4, we group samples depending on level of the severity. Therefore, there are three groups of 
+integrated samples: control, mild and severe, with specific scripts for each group. Phase 4 scripts 
+require a submission queue to nodes with 768 GB RAM. Groups can be processed concurrently.
+
+

@@ -1,0 +1,13 @@
+In Phase 3, CellHeap used R (v.4.2.1), an integrated suite of software facilities for data 
+manipulation, calculation, and graphical display that is highly extensible. 
+Many packages are available through the CRAN family of Internet sites providing a wide variety 
+of statistical and graphical routines. CRAN is a network of FTP and worldwide web servers that 
+stores identical, up-to-date code and documentation versions for R, in https://cran.r-project.org/. 
+
+CellHeap performs data quality control by filtering cells. First, we use the SoupX package 
+v.1.6.2 to estimate ambient RNA contamination. Then, we use the Seurat package to filter cells 
+by removing cell barcodes according to the three criteria commonly used for scRNA-Seq quality 
+control processing: UMI counts; genes expressed per cell; and percentage of mitochondrial DNA. 
+The filtering parameters must be refined based on the tissue and the scientific question under 
+investigation. After filtering, we remove cells contaminated with the SARS-CoV-2 virus and use 
+only non-contaminated cells in the downstream analysis. 

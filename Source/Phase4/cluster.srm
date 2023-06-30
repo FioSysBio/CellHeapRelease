@@ -1,0 +1,36 @@
+#!/bin/bash
+#SBATCH --nodes=1             # Number of nodes
+#SBATCH --ntasks-per-node=24  # Number of tasks per node
+#SBATCH -p sequana_cpu_bigmem # Execution queue (partition)
+#SBATCH -J Phase4Sev          # Job name
+#SBATCH --time=48:00:00       # Limite of execution time
+#SBATCH --exclusive           # Nodes with exclusive execution
+
+echo Script Phase 4 Severe
+date
+
+#Displays the Job allocated nodes
+echo $SLURM_JOB_NODELIST
+nodeset -e $SLURM_JOB_NODELIST
+
+cd $SLURM_SUBMIT_DIR
+
+#Load sequana module
+module load sequana/current
+
+#Activate conda environment
+conda activate R-4.2.1
+
+#R-4.2.1 libraries
+export R_LIBS=/scratch/inova-covd19/bin/miniconda3/envs/R-4.2.1/lib/R/library
+
+
+#Path of the executed tool
+EXEC=/scratch/inova-covd19/bin/miniconda3/envs/R-4.2.1/lib/R/bin/Rscript
+
+#Execute R script Severe
+$EXEC SevBalfDataset3.r 
+
+date
+echo Final Phase 4 Severe
+
